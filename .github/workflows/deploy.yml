@@ -20,25 +20,25 @@ jobs:
     environment: ${{ github.ref == 'refs/heads/main' && 'production' || 'development' }}
     
     steps:
-    - name: Checkout
-      uses: actions/checkout@v4
+    - name: Azure Login
+      uses: azure/login@v2
+      with:
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-    - name: Install Azure CLI
-      uses: azure/cli@v2.0.0
+    - name: Setup Azure CLI
+      uses: azure/cli@v2
       with:
         azcliversion: latest
+
+    - name: Checkout
+      uses: actions/checkout@v4
 
     - name: Install Azure Developer CLI
       run: |
         curl -fsSL https://aka.ms/install-azd.sh | bash
         echo "$HOME/.azd/bin" >> $GITHUB_PATH
-
-    - name: Azure Login (Federated Identity)
-      uses: azure/login@v1
-      with:
-        client-id: ${{ secrets.AZURE_CLIENT_ID }}
-        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
     - name: Log in to azd
       run: |
@@ -58,7 +58,7 @@ jobs:
       run: |
         azd provision --no-prompt
       env:
-        AZURE_LOCATION: eastus
+        AZURE_LOCATION: swedencentral
         AZURE_PUBLISHER_NAME: "Your Organization"
         AZURE_PUBLISHER_EMAIL: "admin@yourorganization.com"
         AZURE_APIM_SKU: "Developer"

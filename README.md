@@ -54,7 +54,7 @@ az ad sp create-for-rbac --name "apim-bicep-sp" --role contributor --scopes /sub
 
 Edit the `infra/main.parameters.json` file or set environment variables:
 
-- `AZURE_LOCATION`: Azure region (default: eastus)
+- `AZURE_LOCATION`: Azure region (default: swedencentral)
 - `AZURE_PUBLISHER_NAME`: Organization name
 - `AZURE_PUBLISHER_EMAIL`: Administrator email
 - `AZURE_APIM_SKU`: SKU tier (Developer, Basic, Standard, Premium)
@@ -68,7 +68,7 @@ Edit the `infra/main.parameters.json` file or set environment variables:
 azd init
 
 # Set environment variables
-azd env set AZURE_LOCATION eastus
+azd env set AZURE_LOCATION swedencentral
 azd env set AZURE_PUBLISHER_NAME "Your Organization"
 azd env set AZURE_PUBLISHER_EMAIL "admin@yourorganization.com"
 azd env set AZURE_AUTO_PUBLISH_PORTAL "true"

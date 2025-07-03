@@ -6,7 +6,7 @@
       "value": "${AZURE_APIM_SERVICE_NAME=apim-dev}"
     },
     "location": {
-      "value": "${AZURE_LOCATION=swedencentral}"
+      "value": "swedencentral"
     },
     "publisherName": {
       "value": "${AZURE_PUBLISHER_NAME=Your Organization}"
