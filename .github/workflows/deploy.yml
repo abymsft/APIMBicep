@@ -39,7 +39,7 @@ jobs:
           scope: resourceGroup
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           resource-group-name: example
-          parameters-file: ./main.bicepparam
+          parameters-file: ./infra/main.parameters.json
           validation-level: providerNoRbac
 
       - name: What-If
@@ -51,7 +51,7 @@ jobs:
           scope: resourceGroup
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           resource-group-name: ${{ secrets.AZURE_RESOURCE_GROUP }}
-          parameters-file: ./main.parameters.json
+          parameters-file: ./infra/main.parameters.json
           validation-level: providerNoRbac
 
       - name: Deploy Bicep template
@@ -64,7 +64,7 @@ jobs:
              subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
              resource-group-name: ${{ secrets.AZURE_RESOURCE_GROUP }}
              template-file: ./infra/main.bicep
-             parameters-file: ./main.bicepparam
+             parameters-file: ./infra/main.parameters.json
 
       - name: Display deployment information
         run: |
