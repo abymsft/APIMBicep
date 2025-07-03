@@ -20,55 +20,60 @@ jobs:
     environment: ${{ github.ref == 'refs/heads/main' && 'production' || 'development' }}
     
     steps:
-    - name: Checkout
-      uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-    - name: Azure Login
-      uses: azure/login@v2
-      with:
-        client-id: ${{ secrets.AZURE_CLIENT_ID }}
-        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-    - name: Install azd
-      uses: Azure/setup-azd@v2
+      - name: Validate
+        uses: azure/bicep-deploy@v2
+        with:
+          type: deployment
+          operation: validate
+          name: Development
+          scope: resourceGroup
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          resource-group-name: example
+          parameters-file: ./main.bicepparam
+          validation-level: providerNoRbac
 
+      - name: What-If
+        uses: azure/bicep-deploy@v2
+        with:
+          type: deployment
+          operation: whatIf
+          name: Development
+          scope: resourceGroup
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          resource-group-name: example
+          parameters-file: ./main.bicepparam
+          validation-level: providerNoRbac
+    
+      - name: Deploy Bicep template
+        uses: azure/arm-deploy@v2
+        with:
+          subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          resourceGroupName: ${{ secrets.AZURE_RESOURCE_GROUP }}
+          template: infra/main.bicep
+          parameters: >
+            apimServiceName=${{ secrets.AZURE_APIM_SERVICE_NAME }}
+            location=${{ secrets.AZURE_LOCATION }}
+            publisherName=${{ secrets.AZURE_PUBLISHER_NAME }}
+            publisherEmail=${{ secrets.AZURE_PUBLISHER_EMAIL }}
+            apimSku=${{ secrets.AZURE_APIM_SKU }}
+            apimCapacity=${{ secrets.AZURE_APIM_CAPACITY }}
+            environmentName=${{ secrets.AZURE_ENV_NAME }}
+            autoPublishPortal=${{ secrets.AZURE_AUTO_PUBLISH_PORTAL }}
 
-
-    - name: Install Azure Developer CLI
-      run: |
-        curl -fsSL https://aka.ms/install-azd.sh | bash
-        echo "$HOME/.azd/bin" >> $GITHUB_PATH
-
-    - name: Log in to azd
-      run: |
-        azd auth login --client-id "${{ secrets.AZURE_CLIENT_ID }}" --federated-credential-provider "github" --tenant-id "${{ secrets.AZURE_TENANT_ID }}"
-
-    - name: Validate Bicep templates
-      run: |
-        az bicep build --file infra/main.bicep
-
-    - name: Preview deployment (What-If)
-      if: github.event_name == 'pull_request'
-      run: |
-        azd provision --preview
-
-    - name: Provision Azure resources
-      if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop'
-      run: |
-        azd provision --no-prompt
-      env:
-        AZURE_LOCATION: swedencentral
-        AZURE_PUBLISHER_NAME: "Your Organization"
-        AZURE_PUBLISHER_EMAIL: "admin@yourorganization.com"
-        AZURE_APIM_SKU: "Developer"
-        AZURE_APIM_CAPACITY: "1"
-
-    - name: Display deployment information
-      if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop'
-      run: |
-        echo "🚀 Deployment completed successfully!"
-        echo "Check the Azure portal for your API Management service details"
+      - name: Display deployment information
+        run: |
+          echo "🚀 Deployment completed successfully!"
+          echo "Check the Azure portal for your API Management service details"
 
   validate:
     runs-on: ubuntu-latest
