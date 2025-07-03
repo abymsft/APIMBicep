@@ -50,25 +50,21 @@ jobs:
           name: Development
           scope: resourceGroup
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          resource-group-name: example
-          parameters-file: ./main.bicepparam
+          resource-group-name: ${{ secrets.AZURE_RESOURCE_GROUP }}
+          parameters-file: ./main.parameters.json
           validation-level: providerNoRbac
-    
+
       - name: Deploy Bicep template
-        uses: azure/arm-deploy@v2
+        uses: azure/bicep-deploy@v2
         with:
-          subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          resourceGroupName: ${{ secrets.AZURE_RESOURCE_GROUP }}
-          template: infra/main.bicep
-          parameters: >
-            apimServiceName=${{ secrets.AZURE_APIM_SERVICE_NAME }}
-            location=${{ secrets.AZURE_LOCATION }}
-            publisherName=${{ secrets.AZURE_PUBLISHER_NAME }}
-            publisherEmail=${{ secrets.AZURE_PUBLISHER_EMAIL }}
-            apimSku=${{ secrets.AZURE_APIM_SKU }}
-            apimCapacity=${{ secrets.AZURE_APIM_CAPACITY }}
-            environmentName=${{ secrets.AZURE_ENV_NAME }}
-            autoPublishPortal=${{ secrets.AZURE_AUTO_PUBLISH_PORTAL }}
+             type: deployment
+             operation: deploy
+             name: Development
+             scope: resourceGroup
+             subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+             resource-group-name: ${{ secrets.AZURE_RESOURCE_GROUP }}
+             template-file: ./infra/main.bicep
+             parameters-file: ./main.bicepparam
 
       - name: Display deployment information
         run: |
