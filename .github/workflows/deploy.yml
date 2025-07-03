@@ -27,10 +27,8 @@ jobs:
         tenant-id: ${{ secrets.AZURE_TENANT_ID }}
         subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-    - name: Setup Azure CLI
-      uses: azure/cli@v2
-      with:
-        azcliversion: latest
+    - name: Install azd
+      uses: Azure/setup-azd@v2
 
     - name: Checkout
       uses: actions/checkout@v4
