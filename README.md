@@ -7,10 +7,7 @@ This repository contains a Bicep template for deploying Azure API Management wit
 The template deploys:
 
 - **Azure API Management** (Developer SKU) - Main API gateway service
-- **Log Analytics Workspace** - For monitoring and diagnostics
-- **Application Insights** - For application performance monitoring
 - **User-assigned Managed Identity** - For secure authentication
-- **Diagnostic Settings** - For comprehensive logging
 - **Developer Portal Configuration** - Portal settings and CORS configuration
 - **Portal Revision** - Automatically publishes the developer portal (configurable)
 - **Global Policies** - Security and CORS configuration
@@ -105,13 +102,6 @@ APIMBicep/
 - TLS 1.2+ enforcement
 - Security headers configuration
 - Managed identity authentication
-- Diagnostic logging enabled
-
-### Monitoring
-- Application Insights integration
-- Log Analytics workspace
-- Comprehensive diagnostic settings
-- Custom logging policies
 
 ### API Management Configuration
 - Developer portal enabled
@@ -132,7 +122,6 @@ After deployment, you'll receive:
 - API Management gateway URL
 - Developer portal URL
 - Management API URL
-- Application Insights connection details
 - Managed identity information
 - Portal publication status and details
 
@@ -140,11 +129,11 @@ After deployment, you'll receive:
 
 ### View logs
 ```bash
-# Using Azure CLI
+# Using Azure CLI to view activity logs
 az monitor activity-log list --resource-group <resource-group-name>
 
-# Using azd
-azd logs
+# View API Management service logs in the Azure portal
+# Navigate to API Management > Monitoring > Logs
 ```
 
 ### Access endpoints
@@ -216,10 +205,10 @@ After deployment, you can manage the portal using:
 az apim portal show --resource-group <rg-name> --service-name <apim-name>
 
 # Publish portal manually
-az apim portal publish --resource-group <rg-name> --service-name <apim-name>
+# There is currently no Azure CLI command to publish the developer portal. Use the Azure Portal or REST API for this operation.
 
-# List portal revisions
-az apim portal revision list --resource-group <rg-name> --service-name <apim-name>
+# Note: Listing developer portal revisions is not currently supported via Azure CLI.
+# Use Azure PowerShell or REST API for advanced portal revision management.
 ```
 
 ## 🔒 Security Best Practices

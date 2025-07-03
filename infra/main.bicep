@@ -52,34 +52,6 @@ var tags = {
 
 var apimName = !empty(apimServiceName) ? apimServiceName : 'apim-${resourceToken}'
 
-// Log Analytics Workspace for monitoring
-resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2023-09-01' = {
-  name: 'law-${resourceToken}'
-  location: location
-  tags: tags
-  properties: {
-    sku: {
-      name: 'PerGB2018'
-    }
-    retentionInDays: 30
-    features: {
-      enableLogAccessUsingOnlyResourcePermissions: true
-    }
-  }
-}
-
-// Application Insights for monitoring
-resource applicationInsights 'Microsoft.Insights/components@2020-02-02' = {
-  name: 'ai-${resourceToken}'
-  location: location
-  tags: tags
-  kind: 'web'
-  properties: {
-    Application_Type: 'web'
-    WorkspaceResourceId: logAnalyticsWorkspace.id
-  }
-}
-
 // User-assigned managed identity for API Management
 resource apimManagedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' = {
   name: 'id-apim-${resourceToken}'
@@ -108,7 +80,7 @@ resource apiManagementService 'Microsoft.ApiManagement/service@2024-05-01' = {
     publisherName: publisherName
     publisherEmail: publisherEmail
     
-    // Enable Application Insights for monitoring
+    // Security configuration - disable legacy TLS protocols
     customProperties: {
       'Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Protocols.Tls10': 'false'
       'Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Protocols.Tls11': 'false'
@@ -128,48 +100,6 @@ resource apiManagementService 'Microsoft.ApiManagement/service@2024-05-01' = {
     // API version constraint to ensure modern API versions
     apiVersionConstraint: {
       minApiVersion: '2021-08-01'
-    }
-  }
-}
-
-// Diagnostic settings for API Management
-resource apimDiagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = {
-  name: 'apim-diagnostic-settings'
-  scope: apiManagementService
-  properties: {
-    workspaceId: logAnalyticsWorkspace.id
-    logs: [
-      {
-        categoryGroup: 'allLogs'
-        enabled: true
-        retentionPolicy: {
-          enabled: false
-          days: 0
-        }
-      }
-    ]
-    metrics: [
-      {
-        category: 'AllMetrics'
-        enabled: true
-        retentionPolicy: {
-          enabled: false
-          days: 0
-        }
-      }
-    ]
-  }
-}
-
-// Application Insights logger for API Management
-resource apimLogger 'Microsoft.ApiManagement/service/loggers@2024-05-01' = {
-  parent: apiManagementService
-  name: 'applicationinsights-logger'
-  properties: {
-    loggerType: 'applicationInsights'
-    description: 'Application Insights logger for API Management'
-    credentials: {
-      instrumentationKey: applicationInsights.properties.InstrumentationKey
     }
   }
 }
@@ -213,7 +143,6 @@ resource apimPortalRevision 'Microsoft.ApiManagement/service/portalrevisions@202
   dependsOn: [
     apimPortalConfig
     apimGlobalPolicy
-    apimLogger
   ]
 }
 
@@ -280,15 +209,6 @@ output apimDeveloperPortalUrl string = apiManagementService.properties.developer
 
 @description('The publisher portal URL of the API Management service')
 output apimPortalUrl string = apiManagementService.properties.portalUrl
-
-@description('The Application Insights instrumentation key')
-output applicationInsightsInstrumentationKey string = applicationInsights.properties.InstrumentationKey
-
-@description('The Application Insights connection string')
-output applicationInsightsConnectionString string = applicationInsights.properties.ConnectionString
-
-@description('The Log Analytics workspace ID')
-output logAnalyticsWorkspaceId string = logAnalyticsWorkspace.id
 
 @description('The user-assigned managed identity ID')
 output managedIdentityId string = apimManagedIdentity.id

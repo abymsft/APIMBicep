@@ -68,8 +68,8 @@ jobs:
       env:
         AZURE_LOCATION: eastus
         AZURE_ENV_NAME: ${{ secrets.AZURE_ENV_NAME }}
-        AZURE_PUBLISHER_NAME: "Your Organization"
-        AZURE_PUBLISHER_EMAIL: "admin@yourorganization.com"
+        AZURE_PUBLISHER_NAME: "Dummy Dev Org"
+        AZURE_PUBLISHER_EMAIL: "abnaraya@microsoft.com"
         AZURE_APIM_SKU: "Developer"
         AZURE_APIM_CAPACITY: "1"
         AZURE_AUTO_PUBLISH_PORTAL: "true"
