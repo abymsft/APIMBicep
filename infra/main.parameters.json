@@ -1,0 +1,30 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "apimServiceName": {
+      "value": "${AZURE_APIM_SERVICE_NAME=apim-dev}"
+    },
+    "location": {
+      "value": "${AZURE_LOCATION=swedencentral}"
+    },
+    "publisherName": {
+      "value": "${AZURE_PUBLISHER_NAME=Your Organization}"
+    },
+    "publisherEmail": {
+      "value": "${AZURE_PUBLISHER_EMAIL=abnaraya@microsoft.com}"
+    },
+    "apimSku": {
+      "value": "${AZURE_APIM_SKU=Developer}"
+    },
+    "apimCapacity": {
+      "value": "${AZURE_APIM_CAPACITY=1}"
+    },
+    "environmentName": {
+      "value": "${AZURE_ENV_NAME=dev}"
+    },
+    "autoPublishPortal": {
+      "value": "${AZURE_AUTO_PUBLISH_PORTAL=true}"
+    }
+  }
+}

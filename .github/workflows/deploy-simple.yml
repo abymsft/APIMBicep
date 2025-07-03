@@ -1,0 +1,98 @@
+name: Deploy Azure API Management
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Setup Azure CLI
+      run: |
+        curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+
+    - name: Install Azure Developer CLI
+      run: |
+        curl -fsSL https://aka.ms/install-azd.sh | bash
+        echo "$HOME/.azd/bin" >> $GITHUB_PATH
+
+    - name: Azure Login
+      run: |
+        az login --service-principal \
+          --username $AZURE_CLIENT_ID \
+          --password $AZURE_CLIENT_SECRET \
+          --tenant $AZURE_TENANT_ID
+      env:
+        AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+        AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+        AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+
+    - name: Set Azure subscription
+      run: |
+        az account set --subscription $AZURE_SUBSCRIPTION_ID
+      env:
+        AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+    - name: Validate Bicep templates
+      run: |
+        az bicep build --file infra/main.bicep
+
+    - name: Preview deployment (What-If)
+      if: github.event_name == 'pull_request'
+      run: |
+        azd provision --preview
+      env:
+        AZURE_LOCATION: eastus
+        AZURE_ENV_NAME: ${{ secrets.AZURE_ENV_NAME }}
+
+    - name: Provision Azure resources
+      if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop'
+      run: |
+        azd provision --no-prompt
+      env:
+        AZURE_LOCATION: eastus
+        AZURE_ENV_NAME: ${{ secrets.AZURE_ENV_NAME }}
+        AZURE_PUBLISHER_NAME: "Your Organization"
+        AZURE_PUBLISHER_EMAIL: "admin@yourorganization.com"
+        AZURE_APIM_SKU: "Developer"
+        AZURE_APIM_CAPACITY: "1"
+        AZURE_AUTO_PUBLISH_PORTAL: "true"
+
+    - name: Display deployment information
+      if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop'
+      run: |
+        echo "🚀 Deployment completed successfully!"
+        echo "Check the Azure portal for your API Management service details"
+
+  validate:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Setup Azure CLI
+      run: |
+        curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+
+    - name: Validate Bicep template
+      run: |
+        az bicep build --file infra/main.bicep --stdout > /dev/null
+        echo "✅ Bicep template validation passed"
