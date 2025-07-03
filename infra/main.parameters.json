@@ -3,28 +3,28 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "apimServiceName": {
-      "value": "${AZURE_APIM_SERVICE_NAME=apim-dev}"
+      "value": "apim-dev"
     },
     "location": {
       "value": "swedencentral"
     },
     "publisherName": {
-      "value": "${AZURE_PUBLISHER_NAME=Your Organization}"
+      "value": "testOrg"
     },
     "publisherEmail": {
-      "value": "${AZURE_PUBLISHER_EMAIL=abnaraya@microsoft.com}"
+      "value": "abnaraya@microsoft.com"
     },
     "apimSku": {
-      "value": "${AZURE_APIM_SKU=Basicv2}"
+      "value": "Basicv2"
     },
     "apimCapacity": {
-      "value": "${AZURE_APIM_CAPACITY=1}"
+      "value": "1"
     },
     "environmentName": {
-      "value": "${AZURE_ENV_NAME=dev}"
+      "value": "dev"
     },
     "autoPublishPortal": {
-      "value": "${AZURE_AUTO_PUBLISH_PORTAL=true}"
+      "value": "true"
     }
   }
 }
