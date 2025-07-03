@@ -15,7 +15,7 @@
       "value": "${AZURE_PUBLISHER_EMAIL=abnaraya@microsoft.com}"
     },
     "apimSku": {
-      "value": "${AZURE_APIM_SKU=Developer}"
+      "value": "${AZURE_APIM_SKU=Basicv2}"
     },
     "apimCapacity": {
       "value": "${AZURE_APIM_CAPACITY=1}"
