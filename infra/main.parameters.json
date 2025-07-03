@@ -24,7 +24,7 @@
       "value": "dev"
     },
     "autoPublishPortal": {
-      "value": "true"
+      "value": true
     }
   }
 }
