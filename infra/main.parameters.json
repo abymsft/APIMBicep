@@ -3,7 +3,7 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "apimServiceName": {
-      "value": "apim-dev"
+      "value": "apimdevtdc001"
     },
     "location": {
       "value": "swedencentral"
