@@ -44,7 +44,7 @@ The empty-workspace and sample templates are **alternative entry points, not con
 ## What are APIM workspaces?
 
 - A workspace is an isolated administrative scope inside one APIM service, so separate teams can manage their own APIs, products, backends, and policies.
-- Workspace resources are scoped to the workspace and have their own RBAC.
+- Resources such as APIs, products, and backends belong to a specific workspace. Azure RBAC permissions can be assigned at the workspace level so each team can manage its own resources. Permissions inherited from higher scopes still apply. See [Assign access to APIM workspaces](docs/workspace-rbac.md).
 - _TODO: link to the Microsoft Learn article on workspaces and describe the platform team and workspace team roles._
 
 ## Supported SKUs and gateway behavior
