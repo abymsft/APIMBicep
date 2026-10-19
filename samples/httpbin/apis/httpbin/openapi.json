@@ -1,0 +1,33 @@
+{
+  "openapi": "3.0.1",
+  "info": { "title": "httpbin", "version": "1.0.0" },
+  "paths": {
+    "/get": {
+      "get": {
+        "operationId": "httpGet",
+        "summary": "Returns request data",
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/post": {
+      "post": {
+        "operationId": "httpPost",
+        "summary": "Echoes POST data",
+        "requestBody": {
+          "content": { "application/json": { "schema": { "type": "object" } } }
+        },
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/status/{code}": {
+      "get": {
+        "operationId": "httpStatus",
+        "summary": "Returns the given status code",
+        "parameters": [
+          { "name": "code", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "responses": { "200": { "description": "OK" } }
+      }
+    }
+  }
+}

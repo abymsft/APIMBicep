@@ -1,0 +1,39 @@
+{
+  "openapi": "3.0.1",
+  "info": { "title": "JSONPlaceholder", "version": "1.0.0" },
+  "paths": {
+    "/posts": {
+      "get": {
+        "operationId": "listPosts",
+        "summary": "List posts",
+        "responses": { "200": { "description": "OK" } }
+      },
+      "post": {
+        "operationId": "createPost",
+        "summary": "Create a post",
+        "requestBody": {
+          "required": true,
+          "content": { "application/json": { "schema": { "type": "object" } } }
+        },
+        "responses": { "201": { "description": "Created" } }
+      }
+    },
+    "/posts/{id}": {
+      "get": {
+        "operationId": "getPost",
+        "summary": "Get a post",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/users": {
+      "get": {
+        "operationId": "listUsers",
+        "summary": "List users",
+        "responses": { "200": { "description": "OK" } }
+      }
+    }
+  }
+}

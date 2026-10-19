@@ -1,0 +1,12 @@
+{
+  "name": "petstore-product",
+  "properties": {
+    "displayName": "Swagger Petstore product",
+    "description": "Product bundling Swagger Petstore",
+    "terms": "Sample terms of use",
+    "subscriptionRequired": true,
+    "approvalRequired": false,
+    "subscriptionsLimit": 10,
+    "state": "published"
+  }
+}

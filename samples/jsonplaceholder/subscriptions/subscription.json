@@ -1,0 +1,4 @@
+{
+  "name": "jsonplaceholder-subscription",
+  "properties": { "displayName": "JSONPlaceholder sample subscription", "state": "active" }
+}

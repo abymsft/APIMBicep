@@ -1,0 +1,20 @@
+{
+  "name": "httpbin-backend",
+  "properties": {
+    "title": "httpbin backend",
+    "description": "Open-source upstream for httpbin",
+    "protocol": "http",
+    "url": "https://httpbin.org",
+    "tls": { "validateCertificateChain": true, "validateCertificateName": true },
+    "circuitBreaker": {
+      "rules": [
+        {
+          "name": "default-breaker",
+          "failureCondition": { "count": 3, "interval": "PT10S", "statusCodeRanges": [{ "min": 429, "max": 429 }, { "min": 500, "max": 599 }] },
+          "tripDuration": "PT10S",
+          "acceptRetryAfter": true
+        }
+      ]
+    }
+  }
+}

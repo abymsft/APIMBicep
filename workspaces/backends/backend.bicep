@@ -33,6 +33,9 @@ param tls object = {
   validateCertificateName: true
 }
 
+@description('Backend circuit breaker contract ({ rules: [...] }); empty to disable')
+param circuitBreaker object = {}
+
 resource apim 'Microsoft.ApiManagement/service@2025-09-01-preview' existing = {
   name: apimServiceName
 }
@@ -52,6 +55,7 @@ resource backend 'Microsoft.ApiManagement/service/workspaces/backends@2025-09-01
     description: empty(backendDescription) ? null : backendDescription
     credentials: empty(credentials) ? null : credentials
     tls: tls
+    circuitBreaker: empty(circuitBreaker) ? null : circuitBreaker
   }
 }
 

@@ -1,0 +1,3 @@
+[
+  { "name": "jsonplaceholder-cache-seconds", "properties": { "displayName": "jsonplaceholder-cache-seconds", "value": "60", "secret": false,   "tags": ["sample"] } }
+]

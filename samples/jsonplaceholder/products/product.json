@@ -1,0 +1,12 @@
+{
+  "name": "jsonplaceholder-product",
+  "properties": {
+    "displayName": "JSONPlaceholder product",
+    "description": "Product bundling JSONPlaceholder",
+    "terms": "Sample terms of use",
+    "subscriptionRequired": true,
+    "approvalRequired": false,
+    "subscriptionsLimit": 10,
+    "state": "published"
+  }
+}

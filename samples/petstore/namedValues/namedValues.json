@@ -1,0 +1,3 @@
+[
+  { "name": "petstore-rate-limit", "properties": { "displayName": "petstore-rate-limit", "value": "30", "secret": false, "tags": ["sample"] } }
+]

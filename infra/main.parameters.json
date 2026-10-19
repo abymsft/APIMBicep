@@ -3,19 +3,19 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "apimServiceName": {
-      "value": "apimdevtdc001"
+      "value": "apim-sample-001"
     },
     "location": {
-      "value": "swedencentral"
+      "value": "norwayeast"
     },
     "publisherName": {
       "value": "testOrg"
     },
     "publisherEmail": {
-      "value": "abnaraya@microsoft.com"
+      "value": "admin@contoso.example"
     },
     "apimSku": {
-      "value": "Basic"
+      "value": "BasicV2"
     },
     "apimCapacity": {
       "value": 1
@@ -24,7 +24,7 @@
       "value": "dev"
     },
     "autoPublishPortal": {
-      "value": true
+      "value": false
     }
   }
 }

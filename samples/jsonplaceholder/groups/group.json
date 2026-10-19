@@ -1,0 +1,8 @@
+{
+  "name": "jsonplaceholder-consumers",
+  "properties": {
+    "displayName": "JSONPlaceholder consumers",
+    "description": "Consumers allowed to use JSONPlaceholder",
+    "type": "custom"
+  }
+}

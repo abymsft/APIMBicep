@@ -1,0 +1,4 @@
+{
+  "name": "petstore-subscription",
+  "properties": { "displayName": "Swagger Petstore sample subscription", "state": "active" }
+}

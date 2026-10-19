@@ -73,6 +73,60 @@ jobs:
           echo "🚀 Deployment completed successfully!"
           echo "Check the Azure portal for your API Management service details"
 
+  deploy-workspaces:
+    runs-on: ubuntu-latest
+    environment: ${{ github.ref == 'refs/heads/main' && 'production' || 'development' }}
+    env:
+      AZURE_APIM_SERVICE_NAME: ${{ vars.AZURE_APIM_SERVICE_NAME }}
+      AZURE_LOG_ANALYTICS_WORKSPACE_ID: ${{ vars.AZURE_LOG_ANALYTICS_WORKSPACE_ID }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Validate workspaces
+        uses: azure/bicep-deploy@v2
+        with:
+          type: deployment
+          operation: validate
+          name: Workspaces
+          scope: resourceGroup
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          resource-group-name: ${{ secrets.AZURE_RESOURCE_GROUP }}
+          parameters-file: ./infra/sampleWorkspaces.bicepparam
+          validation-level: providerNoRbac
+
+      - name: What-If workspaces
+        uses: azure/bicep-deploy@v2
+        with:
+          type: deployment
+          operation: whatIf
+          name: Workspaces
+          scope: resourceGroup
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          resource-group-name: ${{ secrets.AZURE_RESOURCE_GROUP }}
+          parameters-file: ./infra/sampleWorkspaces.bicepparam
+          validation-level: providerNoRbac
+
+      - name: Deploy workspaces
+        if: github.event_name != 'pull_request'
+        uses: azure/bicep-deploy@v2
+        with:
+          type: deployment
+          operation: create
+          name: Workspaces
+          scope: resourceGroup
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          resource-group-name: ${{ secrets.AZURE_RESOURCE_GROUP }}
+          parameters-file: ./infra/sampleWorkspaces.bicepparam
+
   validate:
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request'
@@ -88,4 +142,5 @@ jobs:
     - name: Validate Bicep template
       run: |
         az bicep build --file infra/main.bicep --stdout > /dev/null
+        az bicep build --file infra/sampleWorkspaces.bicep --stdout > /dev/null
         echo "✅ Bicep template validation passed"

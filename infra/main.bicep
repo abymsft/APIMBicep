@@ -24,6 +24,7 @@ param publisherEmail string = 'admin@yourorganization.com'
 @allowed([
   'Developer'
   'Basic'
+  'BasicV2'
   'Standard'
   'Premium'
   'Consumption'

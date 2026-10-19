@@ -1,0 +1,16 @@
+<policies>
+  <inbound>
+    <base />
+    <rate-limit-by-key calls="3" renewal-period="10" counter-key='@(context.Subscription.Id + "-burst")' />
+    <set-backend-service backend-id="httpbin-backend" />
+  </inbound>
+  <backend>
+    <base />
+  </backend>
+  <outbound>
+    <base />
+  </outbound>
+  <on-error>
+    <base />
+  </on-error>
+</policies>

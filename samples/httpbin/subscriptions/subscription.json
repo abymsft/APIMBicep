@@ -1,0 +1,4 @@
+{
+  "name": "httpbin-subscription",
+  "properties": { "displayName": "httpbin sample subscription", "state": "active" }
+}

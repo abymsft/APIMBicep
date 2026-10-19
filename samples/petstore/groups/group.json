@@ -1,0 +1,8 @@
+{
+  "name": "petstore-consumers",
+  "properties": {
+    "displayName": "Swagger Petstore consumers",
+    "description": "Consumers allowed to use Swagger Petstore",
+    "type": "custom"
+  }
+}

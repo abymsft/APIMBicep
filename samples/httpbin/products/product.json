@@ -1,0 +1,12 @@
+{
+  "name": "httpbin-product",
+  "properties": {
+    "displayName": "httpbin product",
+    "description": "Product bundling httpbin",
+    "terms": "Sample terms of use",
+    "subscriptionRequired": true,
+    "approvalRequired": false,
+    "subscriptionsLimit": 10,
+    "state": "published"
+  }
+}
